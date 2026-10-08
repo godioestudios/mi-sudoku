@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1740" height="1200" viewBox="0 0 1740 1200" role="img" aria-labelledby="title desc">
+<title id="title">Mapa de flujo del Sudoku</title>
+<desc id="desc">Flujo para generar un tablero, resolverlo con backtracking y quitar números manteniendo una solución única.</desc>
+<defs>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#52636a"/></marker>
+  <style>
+    text{font-family:"Segoe UI",Arial,sans-serif;fill:#20333a}.title{font-size:38px;font-weight:700}.subtitle{font-size:18px;fill:#52636a}.heading{font-size:23px;font-weight:700}.nodeText{font-size:17px;font-weight:600;text-anchor:middle}.small{font-size:15px;text-anchor:middle}.label{font-size:15px;font-weight:700;fill:#52636a}.panel{fill:#f8faf9;stroke:#d7e0dd;stroke-width:2}.box{fill:#fff;stroke:#8ca19b;stroke-width:2}.action{fill:#eaf3ef;stroke:#5d8879;stroke-width:2}.good{fill:#e2f2e8;stroke:#508568;stroke-width:2}.bad{fill:#f8eae6;stroke:#b36c58;stroke-width:2}.decision{fill:#fff2d8;stroke:#c38a2d;stroke-width:2}.line{fill:none;stroke:#52636a;stroke-width:3;marker-end:url(#arrow)}.linePlain{fill:none;stroke:#52636a;stroke-width:3}.pill{fill:#264f49;stroke:#264f49;stroke-width:2}.white{fill:#fff}
+  </style>
+</defs>
+<rect width="1740" height="1200" fill="#f1f5f2"/>
+<text x="65" y="70" class="title">Mapa de flujo del Sudoku</text>
+<text x="65" y="106" class="subtitle">Generar una solución completa y quitar pistas sin perder la solución única.</text>
+
+<!-- Panels -->
+<rect x="45" y="145" width="520" height="965" rx="18" class="panel"/>
+<rect x="610" y="145" width="520" height="965" rx="18" class="panel"/>
+<rect x="1175" y="145" width="520" height="965" rx="18" class="panel"/>
+<text x="75" y="188" class="heading">1. Crear una solución</text>
+<text x="640" y="188" class="heading">2. Quitar números</text>
+<text x="1205" y="188" class="heading">3. Contar soluciones</text>
+
+<!-- Solver -->
+<rect x="150" y="220" width="310" height="60" rx="24" class="pill"/>
+<text x="305" y="257" class="nodeText white">generarSudoku(cantidad)</text>
+<path d="M305 280v28" class="line"/>
+<rect x="150" y="312" width="310" height="70" rx="12" class="action"/>
+<text x="305" y="342" class="nodeText">crearTableroVacio()</text>
+<text x="305" y="365" class="small">crea una cuadrícula 9 x 9 de ceros</text>
+<path d="M305 382v28" class="line"/>
+<rect x="150" y="414" width="310" height="70" rx="12" class="action"/>
+<text x="305" y="444" class="nodeText">resolverSudoku(tablero)</text>
+<text x="305" y="467" class="small">prueba números con backtracking</text>
+<path d="M305 484v30" class="line"/>
+<polygon points="305,514 425,568 305,622 185,568" class="decision"/>
+<text x="305" y="563" class="small">¿Queda una casilla</text><text x="305" y="584" class="small">vacía?</text>
+<path d="M305 622v32" class="line"/><text x="318" y="644" class="label">Sí</text>
+<rect x="150" y="658" width="310" height="90" rx="12" class="box"/>
+<text x="305" y="690" class="nodeText">Busca la primera casilla vacía</text>
+<text x="305" y="715" class="small">mezcla y prueba candidatos del 1 al 9</text>
+<path d="M305 748v30" class="line"/>
+<polygon points="305,778 425,832 305,886 185,832" class="decision"/>
+<text x="305" y="827" class="small">¿El número es</text><text x="305" y="848" class="small">válido?</text>
+<path d="M305 886v30" class="line"/><text x="318" y="908" class="label">Sí: colocarlo</text>
+<rect x="150" y="918" width="310" height="70" rx="12" class="action"/>
+<text x="305" y="948" class="nodeText">Llama de nuevo a resolverSudoku</text>
+<text x="305" y="971" class="small">si falla, restaura la casilla a 0</text>
+<path d="M150 954H95V568H185" class="line"/><text x="101" y="930" class="label">probar siguiente opción</text>
+<path d="M425 568H520V1050H460" class="line"/><text x="438" y="550" class="label">No</text>
+<rect x="150" y="1012" width="310" height="62" rx="12" class="good"/>
+<text x="305" y="1050" class="nodeText">Tablero completo y válido</text>
+
+<!-- Removal -->
+<rect x="715" y="220" width="310" height="66" rx="12" class="action"/>
+<text x="870" y="249" class="nodeText">quitarNumeros(tablero, cantidad)</text>
+<text x="870" y="272" class="small">inicia eliminados = 0</text>
+<path d="M460 1043H585V253H715" class="line"/>
+<path d="M870 286v28" class="line"/>
+<polygon points="870,314 990,366 870,418 750,366" class="decision"/>
+<text x="870" y="361" class="small">¿Quitó la cantidad</text><text x="870" y="382" class="small">pedida?</text>
+<path d="M990 366h95v89" class="line"/><text x="1005" y="350" class="label">Sí</text>
+<rect x="1005" y="455" width="100" height="65" rx="12" class="good"/>
+<text x="1055" y="483" class="small">Devuelve</text><text x="1055" y="503" class="small">el tablero</text>
+<path d="M870 418v27" class="line"/><text x="883" y="439" class="label">No</text>
+<rect x="715" y="449" width="310" height="66" rx="12" class="box"/>
+<text x="870" y="477" class="nodeText">Elige fila y columna al azar</text>
+<text x="870" y="499" class="small">cada índice va de 0 a 8</text>
+<path d="M870 515v27" class="line"/>
+<polygon points="870,542 980,590 870,638 760,590" class="decision"/>
+<text x="870" y="596" class="small">¿La casilla ya</text><text x="870" y="616" class="small">está vacía?</text>
+<path d="M760 590H675V482H715" class="line"/><text x="690" y="575" class="label">Sí: elegir otra</text>
+<path d="M870 638v29" class="line"/><text x="882" y="660" class="label">No</text>
+<rect x="715" y="667" width="310" height="74" rx="12" class="action"/>
+<text x="870" y="697" class="nodeText">Guarda el número y pone 0</text>
+<text x="870" y="721" class="small">luego comprueba la unicidad</text>
+<path d="M1025 704h150" class="line"/>
+<path d="M1175 704v70" class="line"/>
+<path d="M1175 900H1075V366H990" class="line"/>
+<text x="1083" y="884" class="label">repetir</text>
+<rect x="715" y="770" width="310" height="80" rx="12" class="box"/>
+<text x="870" y="801" class="nodeText">Espera el resultado de</text>
+<text x="870" y="825" class="nodeText">contarSoluciones(tablero)</text>
+<path d="M870 850v29" class="line"/>
+<polygon points="870,879 990,929 870,979 750,929" class="decision"/>
+<text x="870" y="925" class="small">¿Hay exactamente</text><text x="870" y="946" class="small">una solución?</text>
+<path d="M750 929H700V850H715" class="line"/><text x="704" y="913" class="label">No: restaura</text>
+<rect x="715" y="1000" width="310" height="70" rx="12" class="good"/>
+<text x="870" y="1030" class="nodeText">Sí: conserva el 0</text>
+<text x="870" y="1053" class="small">y aumenta eliminados</text>
+<path d="M870 979v21" class="line"/>
+<path d="M715 1035H650V366H750" class="line"/>
+
+<!-- Count solutions -->
+<rect x="1280" y="220" width="310" height="66" rx="12" class="action"/>
+<text x="1435" y="249" class="nodeText">contarSoluciones(tablero)</text>
+<text x="1435" y="272" class="small">busca una casilla vacía</text>
+<path d="M1435 286v28" class="line"/>
+<polygon points="1435,314 1550,366 1435,418 1320,366" class="decision"/>
+<text x="1435" y="361" class="small">¿Encontró una</text><text x="1435" y="382" class="small">casilla vacía?</text>
+<path d="M1435 418v31" class="line"/><text x="1448" y="440" class="label">Sí</text>
+<rect x="1280" y="449" width="310" height="72" rx="12" class="box"/>
+<text x="1435" y="479" class="nodeText">Prueba números válidos</text>
+<text x="1435" y="503" class="small">se llama recursivamente y suma</text>
+<path d="M1435 521v28" class="line"/>
+<rect x="1280" y="552" width="310" height="72" rx="12" class="action"/>
+<text x="1435" y="582" class="nodeText">Deshace cada intento</text>
+<text x="1435" y="606" class="small">vuelve a dejar la casilla en 0</text>
+<path d="M1435 624v28" class="line"/>
+<polygon points="1435,652 1550,704 1435,756 1320,704" class="decision"/>
+<text x="1435" y="699" class="small">¿Encontró 2 o</text><text x="1435" y="720" class="small">más soluciones?</text>
+<path d="M1435 756v30" class="line"/><text x="1448" y="777" class="label">No: seguir contando</text>
+<rect x="1280" y="786" width="310" height="62" rx="12" class="good"/>
+<text x="1435" y="824" class="nodeText">Tablero completo: devuelve 1</text>
+<path d="M1550 704h92v-338h-92" class="line"/><text x="1557" y="687" class="label">Sí: devuelve 2</text>
+<path d="M1280 810H1175V704" class="line"/>
+<text x="1185" y="794" class="label">resultado</text>
+<rect x="1280" y="895" width="310" height="135" rx="12" class="box"/>
+<text x="1435" y="930" class="nodeText">Resultado de la cuenta</text>
+<text x="1435" y="963" class="small">0 = ninguna solución</text>
+<text x="1435" y="990" class="small">1 = solución única</text>
+<text x="1435" y="1017" class="small">2 = dos o más soluciones</text>
+<path d="M1435 848v47" class="linePlain"/>
+
+<text x="65" y="1155" class="subtitle">esValido comprueba fila, columna y bloque 3 x 3. Si una eliminación rompe la unicidad, se restaura el número original.</text>
+</svg>
